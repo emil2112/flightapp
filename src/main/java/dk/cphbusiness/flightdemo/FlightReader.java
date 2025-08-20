@@ -22,7 +22,8 @@ public class FlightReader {
         try {
             List<FlightDTO> flightList = getFlightsFromFile("flights.json");
             List<FlightInfoDTO> flightInfoDTOList = getFlightInfoDetails(flightList);
-            flightInfoDTOList.forEach(System.out::println);
+//            flightInfoDTOList.forEach(System.out::println);
+            System.out.println(getTotalDuration(flightList, "Lufthansa"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -64,4 +65,36 @@ public class FlightReader {
         return flightInfoList;
     }
 
+//    public static List<FlightInfoDTO> getDuration(List<FlightDTO> flightList) {
+//        return flightList.stream()
+//                .filter(flight -> "Lufthansa".equalsIgnoreCase(flight.getAirline().getName()))
+//                .map(flight -> {
+//                    LocalDateTime departure = flight.getArrival().getScheduled();
+//                    LocalDateTime arrival = flight.getArrival().getScheduled();
+//                    Duration duration = Duration.between(departure, arrival);
+//
+//                    FlightInfoDTO flightInfo =
+//                            FlightInfoDTO.builder()
+//                                    .name(flight.getFlight().getNumber())
+//                                    .iata(flight.getFlight().getIata())
+//                                    .airline(flight.getAirline().getName())
+//                                    .duration(duration)
+//                                    .departure(departure)
+//                                    .arrival(arrival)
+//                                    .origin(flight.getDeparture().getAirport())
+//                                    .destination(flight.getArrival().getAirport())
+//                                    .build();
+//
+//                    return flightInfo;
+//                }).toList();
+//    }
+
+    public static Duration getTotalDuration (List<FlightDTO> flightList, String airline){
+        List<FlightInfoDTO> flightInfo = getFlightInfoDetails(flightList);
+
+        return flightInfo.stream()
+                .filter(flight -> airline.equalsIgnoreCase(flight.getAirline()))
+                .map(FlightInfoDTO::getDuration)
+                .reduce(Duration.ZERO, Duration::plus);
+    }
 }

@@ -48,4 +48,15 @@ class FlightReaderTest {
             throw new RuntimeException(e);
         }
     }
+    @Test
+    void getDuration(){
+        try {
+            List<FlightDTO> flights = reader.getFlightsFromFile("flights.json");
+            List<FlightInfoDTO> flightInfo = reader.getDuration(flights);
+            assertEquals("Lufthansa", flightInfo.get(0).getAirline());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 }
