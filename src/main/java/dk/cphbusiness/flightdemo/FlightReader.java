@@ -23,7 +23,15 @@ public class FlightReader {
             List<FlightDTO> flightList = getFlightsFromFile("flights.json");
             List<FlightInfoDTO> flightInfoDTOList = getFlightInfoDetails(flightList);
 //            flightInfoDTOList.forEach(System.out::println);
-            System.out.println(getTotalDuration(flightList, "Lufthansa"));
+//            System.out.println(getTotalDuration(flightList, "Lufthansa"));
+            //Formats and prints total duration for Airline
+            Duration totalDuration = getTotalDuration(flightList, "Lufthansa");
+            long totalMinutes = totalDuration.toMinutes();
+            long totalHours = totalMinutes/60;
+            long remainingMinutes = totalMinutes%60;
+            String formattedDuration = totalHours + " " + "hours " + remainingMinutes + " " + "minutes";
+            System.out.println(formattedDuration);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
